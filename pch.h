@@ -87,3 +87,4 @@ namespace DX
 // DirectXTK
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "CommonStates.h"

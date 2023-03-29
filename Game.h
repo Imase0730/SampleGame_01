@@ -6,6 +6,7 @@
 
 #include "DeviceResources.h"
 #include "StepTimer.h"
+#include "ImaseLib/DebugFont.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -67,5 +68,11 @@ private:
 
     // キーボードステートトラッカー
     DirectX::Keyboard::KeyboardStateTracker m_tracker;
+
+    // 共通ステートオブジェクトへのポインタ
+    std::unique_ptr<DirectX::CommonStates> m_states;
+
+    // デバッグ用文字列表示オブジェクトへのポインタ
+    std::unique_ptr<Imase::DebugFont> m_font;
 
 };

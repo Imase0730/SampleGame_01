@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
+#include <sstream>
 
 extern void ExitGame() noexcept;
 
@@ -57,12 +58,17 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
+    elapsedTime;
 
     // キーボードステートトラッカーを更新
     auto state = Keyboard::Get().GetState();
     m_tracker.Update(state);
 
-    elapsedTime;
+    // fpsの表示
+    std::wostringstream oss;
+    oss << "fps:" << m_timer.GetFramesPerSecond();
+    m_font->AddString(oss.str().c_str(), SimpleMath::Vector2(0.0f, 0.0f));
+
 }
 #pragma endregion
 
@@ -83,6 +89,9 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
     context;
+
+    // デバッグ用文字列の表示
+    m_font->Render(m_states.get());
 
     m_deviceResources->PIXEndEvent();
 
@@ -171,9 +180,16 @@ void Game::GetDefaultSize(int& width, int& height) const noexcept
 void Game::CreateDeviceDependentResources()
 {
     auto device = m_deviceResources->GetD3DDevice();
+    auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Initialize device dependent objects here (independent of window size).
-    device;
+
+    // 共通ステートオブジェクトの作成
+    m_states = std::make_unique<CommonStates>(device);
+
+    // デバッグ用文字列表示オブジェクトの作成
+    m_font = std::make_unique<Imase::DebugFont>(device, context, L"Resources/Font/SegoeUI_18.spritefont");
+
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
