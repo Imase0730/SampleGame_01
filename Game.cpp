@@ -75,8 +75,7 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
-    elapsedTime;
-
+ 
     // キーボードステートトラッカーを更新
     auto state = Keyboard::Get().GetState();
     m_tracker.Update(state);
@@ -104,10 +103,8 @@ void Game::Render()
     Clear();
 
     m_deviceResources->PIXBeginEvent(L"Render");
-    auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
-    context;
 
     // シーンの描画
     m_sceneManager->Render();
@@ -214,7 +211,6 @@ void Game::CreateDeviceDependentResources()
     
     // シーンのデバイスに依存するオブジェクトの作成
     if (m_sceneManager) m_sceneManager->CreateDeviceDependentResources();
-
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
