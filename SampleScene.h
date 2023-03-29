@@ -8,11 +8,24 @@
 //--------------------------------------------------------------------------------------
 #pragma once
 #include "ImaseLib/SceneManager.h"
+#include "ImaseLib/TaskManager.h"
 #include "UserResources.h"
+#include "SampleTask.h"
 
 class SampleScene : public Imase::Scene<UserResources>
 {
+private:
+
+	// タスクマネージャー
+	Imase::TaskManager m_taskManager;
+
+	// サンプルタスクへのポインタ
+	SampleTask* m_sampleTask;
+
 public:
+
+	// コンストラクタ
+	SampleScene();
 
 	// 初期化
 	void Initialize() override;

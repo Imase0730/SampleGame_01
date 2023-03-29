@@ -14,6 +14,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{34d07605-9a94-469b-9400-9f5c7699d0b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Task">
+      <UniqueIdentifier>{6121f598-ee76-40db-97c2-e91287a89d5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -24,16 +27,7 @@
     <ClInclude Include="DeviceResources.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ImaseLib\DebugCamera.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
     <ClInclude Include="ImaseLib\DebugFont.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
-    <ClInclude Include="ImaseLib\DisplayCollision.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
-    <ClInclude Include="ImaseLib\TaskManager.h">
       <Filter>ImaseLib</Filter>
     </ClInclude>
     <ClInclude Include="DebugDraw.h">
@@ -46,6 +40,12 @@
     <ClInclude Include="SampleScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="ImaseLib\TaskManager.h">
+      <Filter>ImaseLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleTask.h">
+      <Filter>Task</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -54,16 +54,7 @@
     <ClCompile Include="DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="ImaseLib\DebugCamera.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
     <ClCompile Include="ImaseLib\DebugFont.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\DisplayCollision.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\TaskManager.cpp">
       <Filter>ImaseLib</Filter>
     </ClCompile>
     <ClCompile Include="DebugDraw.cpp">
@@ -71,6 +62,12 @@
     </ClCompile>
     <ClCompile Include="SampleScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ImaseLib\TaskManager.cpp">
+      <Filter>ImaseLib</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleTask.cpp">
+      <Filter>Task</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
