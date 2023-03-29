@@ -60,4 +60,12 @@ private:
 
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
+
+private:
+
+    // 追加
+
+    // キーボードステートトラッカー
+    DirectX::Keyboard::KeyboardStateTracker m_tracker;
+
 };

@@ -44,6 +44,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     if (FAILED(hr))
         return 1;
 
+    // キー入力管理オブジェクトを作成
+    std::unique_ptr<Keyboard> keyboard;
+    keyboard = std::make_unique<Keyboard>();
+
     g_game = std::make_unique<Game>();
 
     // Register class and create window
@@ -200,6 +204,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_ACTIVATEAPP:
+        //        OutputDebugString(L"WM_ACTIVATEAPP\n");
+
+        // 追加
+        Keyboard::ProcessMessage(message, wParam, lParam);
+
         if (game)
         {
             if (wParam)
@@ -211,6 +220,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 game->OnDeactivated();
             }
         }
+
         break;
 
     case WM_POWERBROADCAST:
@@ -238,6 +248,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_SYSKEYDOWN:
+//        OutputDebugString(L"WM_SYSKEYDOWN\n");
+
         if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
         {
             // Implements the classic ALT+ENTER fullscreen toggle
@@ -267,12 +279,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             s_fullscreen = !s_fullscreen;
         }
+
+        // 追加
+        Keyboard::ProcessMessage(message, wParam, lParam);
+
         break;
 
     case WM_MENUCHAR:
         // A menu is active and the user presses a key that does not correspond
         // to any mnemonic or accelerator key. Ignore so we don't produce an error beep.
         return MAKELRESULT(0, MNC_CLOSE);
+
+    case WM_ACTIVATE:
+ //       OutputDebugString(L"WM_ACTIVATE\n");
+        Keyboard::ProcessMessage(message, wParam, lParam);
+        break;
+
+    case WM_KEYDOWN:
+ //       OutputDebugString(L"WM_KEYDOWN\n");
+        Keyboard::ProcessMessage(message, wParam, lParam);
+        break;
+
+    case WM_KEYUP:
+//        OutputDebugString(L"WM_KEYUP\n");
+        Keyboard::ProcessMessage(message, wParam, lParam);
+        break;
+
+    case WM_SYSKEYUP:
+//        OutputDebugString(L"WM_SYSKEYUP\n");
+        Keyboard::ProcessMessage(message, wParam, lParam);
+        break;
+
     }
 
     return DefWindowProc(hWnd, message, wParam, lParam);
