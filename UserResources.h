@@ -10,6 +10,7 @@
 
 #include "DeviceResources.h"
 #include "StepTimer.h"
+#include "ImaseLib/DebugFont.h"
 
 // 各シーンに渡す共通リソースを記述してください
 class UserResources
@@ -28,11 +29,14 @@ private:
 	// キーボードステートトラッカー
 	DirectX::Keyboard::KeyboardStateTracker* m_tracker;
 
+	// デバッグ用文字列表示オブジェクトへのポインタ
+	Imase::DebugFont* m_font;
+
 public:
 
 	// コンストラクタ
 	UserResources()
-		: m_deviceResources(nullptr), m_states(nullptr), m_timer(nullptr), m_tracker(nullptr)
+		: m_deviceResources(nullptr), m_states(nullptr), m_timer(nullptr), m_tracker(nullptr), m_font(nullptr)
 	{
 	}
 
@@ -55,9 +59,16 @@ public:
 	const DX::StepTimer* GetStepTimer() { return m_timer; }
 
 	// キーボードステートトラッカーを設定する関数
-	void SetKeyboardStateTracker(DirectX::Keyboard::KeyboardStateTracker*  tracker) { m_tracker = tracker; }
+	void SetKeyboardStateTracker(DirectX::Keyboard::KeyboardStateTracker* tracker) { m_tracker = tracker; }
 
 	// キーボードステートトラッカーを取得する関数
-	const DirectX::Keyboard::KeyboardStateTracker*  GetKeyboardStateTracker() { return m_tracker; }
+	const DirectX::Keyboard::KeyboardStateTracker* GetKeyboardStateTracker() { return m_tracker; }
+
+	// キーボードステートトラッカーを設定する関数
+	void SetDebugFont(Imase::DebugFont* font) { m_font = font; }
+
+	// キーボードステートトラッカーを取得する関数
+	Imase::DebugFont* GetDebugFont() { return m_font; }
+
 };
 

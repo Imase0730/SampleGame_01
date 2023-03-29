@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "Game.h"
 #include <sstream>
+#include "SampleScene.h"
 
 extern void ExitGame() noexcept;
 
@@ -42,8 +43,18 @@ void Game::Initialize(HWND window, int width, int height)
     // ユーザーリソースの作成
     m_userResources = std::make_unique<UserResources>();
 
+    // ユーザーリソースの中身を設定（各シーンに渡したい物を設定）
+    m_userResources->SetDeviceResources(m_deviceResources.get());
+    m_userResources->SetCommonStates(m_states.get());
+    m_userResources->SetKeyboardStateTracker(&m_tracker);
+    m_userResources->SetStepTimerStates(&m_timer);
+    m_userResources->SetDebugFont(m_font.get());
+
     // シーンマネージャーの作成
     m_sceneManager = std::make_unique<Imase::SceneManager<UserResources>>(m_userResources.get());
+
+    // 起動シーンの設定
+    m_sceneManager->SetScene<SampleScene>();
 }
 
 #pragma region Frame Update
