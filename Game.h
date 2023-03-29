@@ -7,6 +7,8 @@
 #include "DeviceResources.h"
 #include "StepTimer.h"
 #include "ImaseLib/DebugFont.h"
+#include "ImaseLib/SceneManager.h"
+#include "UserResources.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -74,5 +76,11 @@ private:
 
     // デバッグ用文字列表示オブジェクトへのポインタ
     std::unique_ptr<Imase::DebugFont> m_font;
+
+    // ユーザーリソースへのポインタ
+    std::unique_ptr<UserResources> m_userResources;
+
+    // シーンマネージャーへのポインタ
+    std::unique_ptr<Imase::SceneManager<UserResources>> m_sceneManager;
 
 };

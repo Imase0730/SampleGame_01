@@ -30,14 +30,15 @@
     <ClInclude Include="ImaseLib\DisplayCollision.h">
       <Filter>ImaseLib</Filter>
     </ClInclude>
-    <ClInclude Include="ImaseLib\SceneManager.h">
-      <Filter>ImaseLib</Filter>
-    </ClInclude>
     <ClInclude Include="ImaseLib\TaskManager.h">
       <Filter>ImaseLib</Filter>
     </ClInclude>
     <ClInclude Include="DebugDraw.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UserResources.h" />
+    <ClInclude Include="ImaseLib\SceneManager.h">
+      <Filter>ImaseLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,9 +55,6 @@
       <Filter>ImaseLib</Filter>
     </ClCompile>
     <ClCompile Include="ImaseLib\DisplayCollision.cpp">
-      <Filter>ImaseLib</Filter>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\SceneManager.cpp">
       <Filter>ImaseLib</Filter>
     </ClCompile>
     <ClCompile Include="ImaseLib\TaskManager.cpp">

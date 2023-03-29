@@ -8,35 +8,31 @@
 //--------------------------------------------------------------------------------------
 #pragma once
 
-#include "DeviceResources.h"
-
+// ESCキーで終了したい場合有効にしてください
 #define ESC_QUIT_ENABLE
+
+#ifdef ESC_QUIT_ENABLE
+#include "Keyboard.h"
+#endif
 
 namespace Imase
 {
+	template <class T>
 	class SceneManager;
 
 	// シーンの基底クラス
+	template <class T>
 	class Scene
 	{
 	private:
 
 		// シーンマネージャーへのポインタ
-		SceneManager* m_sceneManager;
+		SceneManager<T>* m_sceneManager;
 
 	public:
 
-		// シーンマネージャー設定関数
-		void SetSceneManager(SceneManager* sceneManager) { m_sceneManager = sceneManager; }
-
-		// シーンの切り替え関数
-		template <class T>
-		void ChangeScene();
-
-		// デバイスリソース取得関数
-		const DX::DeviceResources* GetDeviceResources();
-
-	public:
+		// コンストラクタ
+		Scene() : m_sceneManager(nullptr) {}
 
 		// デストラクタ
 		virtual ~Scene() = default;
@@ -53,17 +49,40 @@ namespace Imase
 		// 終了処理
 		virtual void Finalize() = 0;
 
+		// デバイスに依存するリソースを作成する関数
+		virtual void CreateDeviceDependentResources() {}
+
+		// ウインドウサイズに依存するリソースを作成する関数
+		virtual void CreateWindowSizeDependentResources() {}
+
+		// デバイスロストした時に呼び出される関数
+		virtual void OnDeviceLost() {}
+
+	public:
+
+		// シーンマネージャー設定関数
+		void SetSceneManager(SceneManager<T>* sceneManager) { m_sceneManager = sceneManager; }
+
+		// シーンの切り替え関数
+		template <class U>
+		void ChangeScene();
+
+		// ユーザーが設定したリソース取得関数
+		T* GetUserResources();
+
 	};
 
 	// シーンマネージャークラス
+	template <class T>
 	class SceneManager
 	{
 	private:
 
-		const DX::DeviceResources* m_deviceResources;
+		// 共通でアクセスしたいオブジェクトへのポインタ
+		T* m_userResources;
 
 		// 実行中のシーンへのポインタ
-		Scene* m_scene;
+		Scene<T>* m_scene;
 
 		// シーン削除関数
 		void DeleteScene();
@@ -71,8 +90,9 @@ namespace Imase
 	public:
 
 		// コンストラクタ
-		SceneManager(DX::DeviceResources* deviceResorces)
-			: m_deviceResources(deviceResorces), m_scene(nullptr)
+		SceneManager(T* userResources)
+			: m_userResources(userResources)
+			, m_scene(nullptr)
 		{
 		};
 
@@ -85,25 +105,45 @@ namespace Imase
 		// 描画
 		void Render();
 
+		// デバイスに依存するリソースを作成する関数
+		void CreateDeviceDependentResources();
+		
+		// ウインドウサイズに依存するリソースを作成する関数
+		void CreateWindowSizeDependentResources();
+
+		// デバイスロストした時に呼び出される関数
+		virtual void OnDeviceLost();
+
 		// シーンの設定関数
-		template <class T>
+		template <class U>
 		void SetScene();
 
-		// デバイスリソース取得関数
-		const DX::DeviceResources* GetDeviceResources() { return m_deviceResources; }
+		// ユーザーリソース取得関数
+		T* GetUseResources() { return m_userResources; }
 
 	};
 
 	// シーンの切り替え関数
 	template <class T>
-	void Scene::ChangeScene()
+	template <class U>
+	void Scene<T>::ChangeScene()
 	{
-		m_sceneManager->SetScene<T>();
+		m_sceneManager->SetScene<U>();
+	}
+
+	// ユーザーが設定したリソース取得関数
+	template <class T>
+	T* Scene<T>::GetUserResources()
+	{
+		assert(m_sceneManager);
+
+		return m_sceneManager->GetUseResources();
 	}
 
 	// シーンの設定関数
 	template <class T>
-	void SceneManager::SetScene()
+	template <class U>
+	void SceneManager<T>::SetScene()
 	{
 		// シーンを削除
 		DeleteScene();
@@ -111,13 +151,68 @@ namespace Imase
 		assert(m_scene == nullptr);
 
 		// シーンを生成
-		m_scene = new T();
+		m_scene = new U;
 
 		// シーンにシーンマネージャーへのポインタを設定
 		m_scene->SetSceneManager(this);
 
 		// シーンの初期化処理
 		m_scene->Initialize();
+	}
+
+	// 更新関数
+	template <class T>
+	void SceneManager<T>::Update(float elapsedTime)
+	{
+#ifdef ESC_QUIT_ENABLE
+		// ESCキーで終了
+		auto kb = DirectX::Keyboard::Get().GetState();
+		if (kb.Escape) PostQuitMessage(0);
+#endif
+
+		if (m_scene) m_scene->Update(elapsedTime);
+	}
+
+	// 描画関数
+	template <class T>
+	void SceneManager<T>::Render()
+	{
+		if (m_scene) m_scene->Render();
+	}
+
+	// デバイスに依存するリソースを作成する関数
+	template <class T>
+	void SceneManager<T>::CreateDeviceDependentResources()
+	{
+		if (m_scene) m_scene->CreateDeviceDependentResources();
+	}
+
+	// ウインドウサイズに依存するリソースを作成する関数
+	template <class T>
+	void SceneManager<T>::CreateWindowSizeDependentResources()
+	{
+		if (m_scene) m_scene->CreateWindowSizeDependentResources();
+	}
+
+	// デバイスロストした時に呼び出される関数
+	template <class T>
+	void SceneManager<T>::OnDeviceLost()
+	{
+		if (m_scene) m_scene->OnDeviceLost();
+	}
+
+	// シーンの削除関数
+	template <class T>
+	void SceneManager<T>::DeleteScene()
+	{
+		if (m_scene)
+		{
+			m_scene->Finalize();
+
+			delete m_scene;
+
+			m_scene = nullptr;
+		}
 	}
 
 }

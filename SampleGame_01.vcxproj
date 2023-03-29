@@ -188,6 +188,7 @@
     <ClInclude Include="ImaseLib\TaskManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
+    <ClInclude Include="UserResources.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugDraw.cpp" />
@@ -200,9 +201,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="ImaseLib\DisplayCollision.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="ImaseLib\SceneManager.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="ImaseLib\TaskManager.cpp">

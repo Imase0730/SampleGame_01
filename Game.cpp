@@ -38,6 +38,12 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     */
+
+    // ユーザーリソースの作成
+    m_userResources = std::make_unique<UserResources>();
+
+    // シーンマネージャーの作成
+    m_sceneManager = std::make_unique<Imase::SceneManager<UserResources>>(m_userResources.get());
 }
 
 #pragma region Frame Update
@@ -64,11 +70,13 @@ void Game::Update(DX::StepTimer const& timer)
     auto state = Keyboard::Get().GetState();
     m_tracker.Update(state);
 
+    // シーンの更新
+    m_sceneManager->Update(elapsedTime);
+
     // fpsの表示
     std::wostringstream oss;
     oss << "fps:" << m_timer.GetFramesPerSecond();
     m_font->AddString(oss.str().c_str(), SimpleMath::Vector2(0.0f, 0.0f));
-
 }
 #pragma endregion
 
@@ -89,6 +97,9 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
     context;
+
+    // シーンの描画
+    m_sceneManager->Render();
 
     // デバッグ用文字列の表示
     m_font->Render(m_states.get());
@@ -189,6 +200,9 @@ void Game::CreateDeviceDependentResources()
 
     // デバッグ用文字列表示オブジェクトの作成
     m_font = std::make_unique<Imase::DebugFont>(device, context, L"Resources/Font/SegoeUI_18.spritefont");
+    
+    // シーンのデバイスに依存するオブジェクトの作成
+    if (m_sceneManager) m_sceneManager->CreateDeviceDependentResources();
 
 }
 
@@ -196,11 +210,17 @@ void Game::CreateDeviceDependentResources()
 void Game::CreateWindowSizeDependentResources()
 {
     // TODO: Initialize windows-size dependent objects here.
+
+    // シーンのウインドウサイズに依存するオブジェクトの作成
+    if (m_sceneManager) m_sceneManager->CreateWindowSizeDependentResources();
 }
 
 void Game::OnDeviceLost()
 {
     // TODO: Add Direct3D resource cleanup here.
+
+    // シーンのクリーンアップ
+    if (m_sceneManager) m_sceneManager->OnDeviceLost();
 }
 
 void Game::OnDeviceRestored()
